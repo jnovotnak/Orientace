@@ -36,15 +36,18 @@ def on_forever():
     global stav
     predchozi_vzdalenost = cuteBot.ultrasonic(cuteBot.SonarUnit.CENTIMETERS, MAX_VZRDALENOST)
     stav = ST_OPATRNE
+
     while True:
         nova_vzdalenost = cuteBot.ultrasonic(cuteBot.SonarUnit.CENTIMETERS, MAX_VZRDALENOST)
         vzdalenost = (predchozi_vzdalenost + nova_vzdalenost) / 2
         predchozi_vzdalenost = vzdalenost
+
         if stav == ST_RYCHLE:
             if vzdalenost < VZDALENOST1:
                 novy_stav = ST_OPATRNE
             else:
                 novy_stav = ST_RYCHLE
+
         elif stav == ST_OPATRNE:
             if vzdalenost < VZDALENOST2:
                 novy_stav = ST_ZATACENI
@@ -52,6 +55,7 @@ def on_forever():
                 novy_stav = ST_RYCHLE
             else:
                 novy_stav = ST_OPATRNE
+
         elif stav == ST_ZATACENI:
             if vzdalenost < VZDALENOST3:
                 novy_stav = ST_COUVANI
@@ -59,32 +63,40 @@ def on_forever():
                 novy_stav = ST_OPATRNE
             else:
                 novy_stav = ST_ZATACENI
+
         elif stav == ST_COUVANI:
             if vzdalenost >= VZDALENOST3:
                 novy_stav = ST_ZATACENI
             else:
                 novy_stav = ST_COUVANI
+
         if stav != novy_stav:
+
             if novy_stav == ST_RYCHLE:
-                cuteBot.motors(30, 30)
+                cuteBot.motors(43, 40)
                 cuteBot.color_light(cuteBot.RGBLights.ALL, 0xffffff)
+
             elif novy_stav == ST_OPATRNE:
-                cuteBot.motors(20, 20)
+                cuteBot.motors(28, 25)
                 cuteBot.color_light(cuteBot.RGBLights.ALL, 0x007fff)
+
             elif novy_stav == ST_ZATACENI:
-                cuteBot.motors(30, -30)
-                basic.pause(10)
                 cuteBot.motors(20, -20)
                 cuteBot.color_light(cuteBot.RGBLights.ALL, 0xffff00)
+                basic.pause(500)
+
             elif novy_stav == ST_COUVANI:
                 cuteBot.motors(-30, -30)
                 basic.pause(10)
                 cuteBot.motors(-20, -20)
                 cuteBot.color_light(cuteBot.RGBLights.ALL, 0xff0000)
+
             stav = novy_stav
+
         for x in range(5):
             for y in range(5):
                 led.unplot(x, y)
+
         if vzdalenost < 10:
             led.plot(4, 0)
         if vzdalenost < 20:
@@ -95,5 +107,7 @@ def on_forever():
             led.plot(1, 0)
         if vzdalenost < 50:
             led.plot(0, 0)
-        basic.pause(50)
+
+        #basic.pause(50)
+
 basic.forever(on_forever)

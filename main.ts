@@ -38,6 +38,7 @@ let VZDALENOST1 = 60
 let VZDALENOST2 = 20
 let VZDALENOST3 = 5
 let MAX_VZRDALENOST = 80
+// basic.pause(50)
 basic.forever(function on_forever() {
     let nova_vzdalenost: number;
     let vzdalenost: number;
@@ -85,16 +86,15 @@ basic.forever(function on_forever() {
         
         if (stav != novy_stav) {
             if (novy_stav == ST_RYCHLE) {
-                cuteBot.motors(30, 30)
+                cuteBot.motors(43, 40)
                 cuteBot.colorLight(cuteBot.RGBLights.ALL, 0xffffff)
             } else if (novy_stav == ST_OPATRNE) {
-                cuteBot.motors(20, 20)
+                cuteBot.motors(28, 25)
                 cuteBot.colorLight(cuteBot.RGBLights.ALL, 0x007fff)
             } else if (novy_stav == ST_ZATACENI) {
-                cuteBot.motors(30, -30)
-                basic.pause(10)
                 cuteBot.motors(20, -20)
                 cuteBot.colorLight(cuteBot.RGBLights.ALL, 0xffff00)
+                basic.pause(500)
             } else if (novy_stav == ST_COUVANI) {
                 cuteBot.motors(-30, -30)
                 basic.pause(10)
@@ -130,6 +130,5 @@ basic.forever(function on_forever() {
             led.plot(0, 0)
         }
         
-        basic.pause(50)
     }
 })
